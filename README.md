@@ -1,43 +1,42 @@
-# LevelUp English — App pessoal A2 → B1/B2
+# LevelUp English
 
-Protótipo de app web para estudar inglês pelo celular, com foco em sair do nível **A2** e evoluir para **B1/B2 inicial**.
+App web gratuito para estudar inglês no celular, criado para uma estudante em nível A2 evoluir para A2+, B1 e B1+ com treinos clicáveis em formato de prova.
 
-## O que tem no app
+## O que tem nesta versão
 
-- Trilha de níveis: A2.0, A2.1, A2.2, A2+, B1.1, B1.2, B1+, B2.0
-- Pontuação por XP
-- Quizzes com explicações
-- Treino de tempo verbal
-- Vocabulário natural
-- Estrutura de frases
-- Listening com voz do navegador
-- Speaking usando microfone
-- Conversa guiada com a treinadora Maya
-- Avaliações quinzenais
-- Revisão dos pontos fracos
+- Dashboard com XP, level atual e progresso.
+- Levels destacados: A2.0, A2.1, A2.2, A2+, B1.1, B1.2, B1+ e B2.0.
+- Treinos clicáveis em modo prova.
+- Prova só de verbos.
+- Prova de tempos verbais.
+- Prova de estrutura da frase.
+- Prova de vocabulário natural.
+- Prova de inglês de filmes.
+- Prova complexa geral.
+- Avaliação quinzenal.
+- Explicações por questão: gramática, tempo verbal, estrutura e vocabulário natural.
+- Listening com voz em inglês usando SpeechSynthesis do navegador.
+- Speaking com microfone usando SpeechRecognition quando disponível.
+- Conversa simples com a treinadora Maya.
+- Histórico de provas e pontos fracos.
+- Progresso salvo no navegador via localStorage.
 
 ## Como usar localmente
 
-1. Baixe este repositório ou o arquivo ZIP.
-2. Abra o arquivo `index.html` no navegador.
-3. No celular, prefira abrir pelo Chrome para usar melhor microfone e voz.
+Baixe o projeto e abra o arquivo `index.html` no navegador.
+
+Para melhor funcionamento de voz e microfone, use Chrome no Android ou um navegador moderno atualizado.
 
 ## Como publicar no GitHub Pages
 
 1. Crie um repositório no GitHub.
-2. Envie os arquivos deste projeto para o repositório.
-3. Vá em **Settings → Pages**.
-4. Em **Build and deployment**, escolha:
-   - Source: **Deploy from a branch**
-   - Branch: **main**
-   - Folder: **/root**
-5. Clique em **Save**.
-6. O GitHub vai gerar um link público para abrir o app.
+2. Envie todos os arquivos deste projeto.
+3. Vá em `Settings` → `Pages`.
+4. Em `Build and deployment`, escolha `Deploy from a branch`.
+5. Escolha a branch `main` e a pasta `/root`.
+6. Salve e aguarde o GitHub gerar o link público.
 
-## Observações importantes
+## Observações
 
-Este projeto roda somente no navegador. Não tem servidor, login ou banco de dados.
+A avaliação de fala é aproximada. O navegador converte voz em texto e o app verifica palavras-chave e estrutura básica. Para avaliação profissional de pronúncia, seria necessário usar uma API especializada ou um professor humano.
 
-O progresso fica salvo no próprio navegador usando `localStorage`. Se você limpar os dados do navegador ou trocar de aparelho, o progresso pode ser perdido.
-
-A avaliação de fala é aproximada porque usa o reconhecimento de voz disponível no navegador. Para avaliação profissional de pronúncia, seria necessário integrar uma API especializada ou usar apoio de professor.
