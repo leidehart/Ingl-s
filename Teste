@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LevelUp English — A2 para Filmes</title>
+  <style>
+    :root {
+      --bg: #0f1224;
+      --panel: #171b33;
+      --panel2: #20264a;
+      --text: #f7f7ff;
+      --muted: #b9bdd7;
+      --accent: #ffb84d;
+      --accent2: #7ee7d7;
+      --good: #87f59c;
+      --bad: #ff8a8a;
+      --line: rgba(255,255,255,.12);
+      --shadow: 0 20px 50px rgba(0,0,0,.35);
+      --radius: 22px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: radial-gradient(circle at top left, rgba(126,231,215,.18), transparent 32%),
+                  radial-gradient(circle at top right, rgba(255,184,77,.16), transparent 28%),
+                  var(--bg);
+      color: var(--text);
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      min-height: 100vh;
+    }
+    header {
+      padding: 22px 18px 8px;
+      position: sticky;
+      top: 0;
+      background: linear-gradient(to bottom, rgba(15,18,36,.98), rgba(15,18,36,.86));
+      backdrop-filter: blur(12px);
+      z-index: 10;
+      border-bottom: 1px solid var(--line);
+    }
+    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; max-width: 1100px; margin: 0 auto; }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .logo { width: 44px; height: 44px; border-radius: 16px; display: grid; place-items: center; background: linear-gradient(135deg, var(--accent), #ff6ba6); color: #151515; font-weight: 900; box-shadow: var(--shadow); }
+    h1 { font-size: clamp(22px, 5vw, 34px); margin: 0; letter-spacing: -.04em; }
+    .subtitle { margin: 3px 0 0; color: var(--muted); font-size: 14px; }
+    .pill { display: inline-flex; align-items: center; gap: 7px; border: 1px solid var(--line); background: rgba(255,255,255,.06); border-radius: 999px; padding: 8px 11px; color: var(--muted); font-size: 13px; white-space: nowrap; }
+    nav { max-width: 1100px; margin: 16px auto 0; display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; }
+    nav button { border: 1px solid var(--line); color: var(--text); background: rgba(255,255,255,.05); border-radius: 999px; padding: 11px 14px; cursor: pointer; white-space: nowrap; font-weight: 700; }
+    nav button.active { background: var(--accent); color: #151515; border-color: transparent; }
+    main { max-width: 1100px; margin: 0 auto; padding: 20px 16px 70px; }
+    .grid { display: grid; gap: 16px; }
+    .grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    @media (max-width: 800px) { .grid.two, .grid.three { grid-template-columns: 1fr; } .topbar { align-items: flex-start; } .hide-mobile { display:none; } }
+    .card { background: linear-gradient(180deg, rgba(255,255,255,.075), rgba(255,255,255,.035)); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 18px; }
+    .card h2, .card h3 { margin: 0 0 10px; letter-spacing: -.025em; }
+    .muted { color: var(--muted); }
+    .small { font-size: 13px; }
+    .big { font-size: clamp(28px, 8vw, 54px); font-weight: 900; letter-spacing: -.06em; margin: 8px 0; }
+    .progress { height: 13px; background: rgba(255,255,255,.09); border-radius: 999px; overflow: hidden; border: 1px solid var(--line); }
+    .bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent2), var(--accent)); border-radius: 999px; transition: width .4s ease; }
+    .level-row { display: grid; grid-template-columns: 72px 1fr auto; gap: 12px; align-items: center; padding: 12px; border-radius: 18px; background: rgba(255,255,255,.045); border: 1px solid var(--line); margin: 9px 0; }
+    .badge { background: var(--panel2); border: 1px solid var(--line); padding: 8px 10px; border-radius: 12px; font-weight: 900; text-align:center; }
+    .level-row.unlocked .badge { background: rgba(126,231,215,.17); color: var(--accent2); }
+    .level-row.current { outline: 2px solid var(--accent); }
+    .btn { border: 0; background: var(--accent); color: #161616; border-radius: 14px; padding: 12px 14px; font-weight: 900; cursor: pointer; box-shadow: 0 10px 24px rgba(255,184,77,.18); }
+    .btn.secondary { background: rgba(255,255,255,.08); color: var(--text); border: 1px solid var(--line); box-shadow: none; }
+    .btn.good { background: var(--accent2); }
+    .btn.danger { background: var(--bad); }
+    .btn:disabled { opacity:.45; cursor:not-allowed; }
+    .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    .input, textarea, select { width: 100%; border: 1px solid var(--line); background: rgba(0,0,0,.18); color: var(--text); border-radius: 14px; padding: 12px; font: inherit; }
+    textarea { min-height: 110px; resize: vertical; }
+    .tab { display: none; }
+    .tab.active { display: block; animation: fade .22s ease; }
+    @keyframes fade { from { opacity:.2; transform: translateY(8px); } to { opacity:1; transform:none; } }
+    .question { padding: 14px; border: 1px solid var(--line); border-radius: 18px; background: rgba(0,0,0,.12); margin: 14px 0; }
+    .option { display: block; margin: 9px 0; padding: 11px; border: 1px solid var(--line); border-radius: 14px; background: rgba(255,255,255,.05); cursor: pointer; }
+    .option input { margin-right: 8px; }
+    .feedback { margin-top: 10px; padding: 12px; border-radius: 14px; border: 1px solid var(--line); background: rgba(255,255,255,.055); }
+    .correct { color: var(--good); font-weight: 900; }
+    .wrong { color: var(--bad); font-weight: 900; }
+    .tag { display:inline-flex; align-items:center; border-radius: 999px; padding: 5px 9px; background: rgba(126,231,215,.12); color: var(--accent2); border: 1px solid rgba(126,231,215,.25); font-size: 12px; font-weight: 800; margin: 3px; }
+    .chat { height: 350px; overflow-y: auto; border: 1px solid var(--line); border-radius: 20px; padding: 12px; background: rgba(0,0,0,.13); }
+    .msg { max-width: 88%; margin: 10px 0; padding: 11px 12px; border-radius: 18px; line-height: 1.4; }
+    .bot { background: rgba(126,231,215,.14); border: 1px solid rgba(126,231,215,.25); }
+    .user { background: rgba(255,184,77,.16); border: 1px solid rgba(255,184,77,.25); margin-left: auto; }
+    .divider { height: 1px; background: var(--line); margin: 18px 0; }
+    .lesson-item { padding: 14px; border: 1px solid var(--line); border-radius: 18px; background: rgba(255,255,255,.04); margin: 10px 0; }
+    .checklist label { display:block; padding:9px 0; }
+    .footer-note { color: var(--muted); font-size: 12px; margin-top: 14px; }
+    .kpi { padding: 14px; border: 1px solid var(--line); border-radius: 18px; background: rgba(255,255,255,.04); }
+    .kpi strong { font-size: 26px; display:block; letter-spacing:-.04em; }
+    code { background: rgba(0,0,0,.28); padding: 2px 5px; border-radius: 6px; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo">EN</div>
+        <div>
+          <h1>LevelUp English</h1>
+          <p class="subtitle">Seu app A2 → B1/B2, com voz, fala, filmes e revisão quinzenal.</p>
+        </div>
+      </div>
+      <div class="pill hide-mobile" id="todayPill">Dia 1 • A2</div>
+    </div>
+    <nav id="nav"></nav>
+  </header>
+
+  <main>
+    <section class="tab active" id="dashboard"></section>
+    <section class="tab" id="levels"></section>
+    <section class="tab" id="lessons"></section>
+    <section class="tab" id="quiz"></section>
+    <section class="tab" id="listening"></section>
+    <section class="tab" id="speaking"></section>
+    <section class="tab" id="conversation"></section>
+    <section class="tab" id="review"></section>
+    <section class="tab" id="settings"></section>
+  </main>
+
+<script>
+const APP = {
+  state: JSON.parse(localStorage.getItem('levelupState') || '{}'),
+  tabs: [
+    ['dashboard','Início'], ['levels','Levels'], ['lessons','Lições'], ['quiz','Quiz'],
+    ['listening','Ouvir'], ['speaking','Falar'], ['conversation','Conversar'], ['review','Avaliação'], ['settings','Ajustes']
+  ],
+  levels: [
+    {id:'A2.0', min:0, title:'Base A2', desc:'Rotina, presente, frases simples, sobrevivência em viagem.'},
+    {id:'A2.1', min:180, title:'Passado e futuro', desc:'Contar o que aconteceu e planejar o que vai fazer.'},
+    {id:'A2.2', min:420, title:'Frases maiores', desc:'Conectar ideias com because, so, but, when, before, after.'},
+    {id:'A2+', min:720, title:'Pré-B1', desc:'Mais naturalidade, perguntas melhores e listening com contexto.'},
+    {id:'B1.1', min:1100, title:'Intermediário real', desc:'Explicar opinião, contar histórias e falar de trabalho/viagens.'},
+    {id:'B1.2', min:1550, title:'B1 forte', desc:'Entender falas claras, podcasts fáceis e cenas simples.'},
+    {id:'B1+', min:2100, title:'Ponte para B2', desc:'Velocidade, phrasal verbs comuns, séries com legenda em inglês.'},
+    {id:'B2.0', min:2750, title:'Filmes em dialeto padrão', desc:'Entender a maioria do conteúdo padrão com menos esforço.'}
+  ],
+  modules: [
+    {week:1, level:'A2.0', theme:'Rotina + Simple Present', grammar:'Simple Present: I work, she works, do/does.', vocab:['I work in my field','I go to the gym','I usually wake up early','I need to improve my English'], structure:'Sujeito + verbo + complemento. Ex: I work in my field.'},
+    {week:2, level:'A2.1', theme:'Ontem + Simple Past', grammar:'Simple Past: worked, went, slept, watched. Use para tempo acabado: yesterday, last week.', vocab:['I slept a lot','I went to the gym','I was really tired','I watched a horror movie'], structure:'Yesterday + sujeito + verbo no passado. Ex: Yesterday, I slept a lot.'},
+    {week:3, level:'A2.1', theme:'Planos + Going to', grammar:'Be going to: I am going to study. Use para planos/intenção.', vocab:['I am going to travel','I am going to work','I am going to study for one hour','I am going to improve my listening'], structure:'Sujeito + am/is/are + going to + verbo base.'},
+    {week:4, level:'A2.2', theme:'Conectar ideias', grammar:'Because, so, but, and, when. Faça frases mais longas sem complicar.', vocab:['because I was tired','so I stayed home','but I want to improve','when I travel'], structure:'Ideia 1 + conector + ideia 2. Ex: I studied because I want to travel.'},
+    {week:5, level:'A2+', theme:'Perguntas naturais', grammar:'Question forms: do/does/did/are/is/can. Ordem: auxiliar + sujeito + verbo.', vocab:['What do you do?','Where did you go?','How can I get there?','Could you repeat that?'], structure:'Auxiliar + sujeito + verbo? Ex: Where do you live?'},
+    {week:6, level:'A2+', theme:'Viagem e sobrevivência', grammar:'Can/could/would like. Pedidos educados e problemas em viagem.', vocab:['I would like to check in','Could you help me?','I’m looking for the station','I have a reservation'], structure:'Could you + verbo? / I would like + noun/to verb.'},
+    {week:7, level:'B1.1', theme:'Present Perfect básico', grammar:'Have/has + past participle. Experiências: I have been, I have never tried.', vocab:['I have never been abroad','I have already booked it','I have studied English for three months','I haven’t watched it yet'], structure:'Sujeito + have/has + particípio + complemento.'},
+    {week:8, level:'B1.1', theme:'Opiniões e justificativas', grammar:'I think / I believe / In my opinion + reason. Use because, however, although.', vocab:['I think it is useful','In my opinion','However, it is difficult','Although I am tired'], structure:'Opinião + razão + exemplo. Ex: I think English is important because I want to travel.'},
+    {week:9, level:'B1.2', theme:'Listening de séries', grammar:'Contrações, reduções e fala natural: gonna, wanna, kinda, gotta.', vocab:['I’m gonna go','I wanna watch something','That sounds scary','What happened?'], structure:'Reconhecer fala reduzida; escrever formal: I am going to / I want to.'},
+    {week:10, level:'B1.2', theme:'Narrativas', grammar:'Past continuous + simple past: I was watching TV when she called.', vocab:['I was watching a movie','when my phone rang','while I was studying','suddenly'], structure:'Past continuous para contexto + simple past para ação principal.'},
+    {week:11, level:'B1+', theme:'Condição e conselhos', grammar:'First conditional: If it rains, I will stay home. Should/must/have to.', vocab:['You should practice every day','If I travel, I will speak English','I have to improve my listening'], structure:'If + present, will + verb.'},
+    {week:12, level:'B1+', theme:'Modo filme', grammar:'Inferir pelo contexto, reconhecer emoções, tom, intenção e chunks.', vocab:['Are you kidding me?','I can’t believe it','That makes sense','It depends'], structure:'Não traduza palavra por palavra; entenda blocos de sentido.'}
+  ],
+  questions: [
+    {area:'tempo verbal', level:'A2', q:'Choose the best sentence for “Ontem eu dormi muito porque estava cansada.”', opts:['Yesterday I sleep a lot because I am tired.','Yesterday I slept a lot because I was tired.','Yesterday I was sleep a lot because I tired.','Yesterday I sleeping so much because I was tired.'], ans:1, exp:'Use Simple Past com yesterday: slept. Para estado no passado, use was/were: I was tired. Estrutura: Yesterday + sujeito + verbo no passado + because + sujeito + was/were + adjetivo.'},
+    {area:'vocabulário natural', level:'A2', q:'What is the most natural way to say “quero melhorar minha fala”?', opts:['I want to grow my speak.','I want to improve my speaking.','I want to increase my speak.','I want to make bigger my speech.'], ans:1, exp:'Em inglês natural, dizemos improve my speaking. Speak é verbo; speaking pode ser habilidade/atividade.'},
+    {area:'estrutura da frase', level:'A2', q:'Choose the correct question.', opts:['Where you live?','Where do you live?','Where does you live?','Where are you live?'], ans:1, exp:'Pergunta no Simple Present com you precisa de do: Where + do + you + live?'},
+    {area:'tempo verbal', level:'A2', q:'Tomorrow, I ___ work and then to the gym.', opts:['go','went','am going to','was going'], ans:2, exp:'Tomorrow indica futuro. Use be going to para plano: I am going to work and then to the gym.'},
+    {area:'vocabulário natural', level:'A2', q:'Which sentence sounds most natural?', opts:['I study English for a travel.','I study English for traveling.','I study English to a travel.','I study English for make travel.'], ans:1, exp:'Travel como ideia geral não usa “a” aqui. Natural: for traveling ou because I want to travel.'},
+    {area:'estrutura', level:'A2', q:'Complete: I like horror and romance ___.', opts:['movie','movies','watch','seeing'], ans:1, exp:'Quando fala de categoria geral, use plural: horror and romance movies.'},
+    {area:'tempo verbal', level:'A2+', q:'I have lived here ___ 2020.', opts:['for','since','during','ago'], ans:1, exp:'Since marca o ponto de início: since 2020. For marca duração: for three years.'},
+    {area:'tempo verbal', level:'B1', q:'Choose the best sentence.', opts:['I was watching a movie when my friend called.','I watched a movie when my friend was call.','I am watching a movie when my friend called yesterday.','I was watch a movie when my friend called.'], ans:0, exp:'Past continuous mostra ação em andamento; simple past interrompe: I was watching... when my friend called.'},
+    {area:'vocabulário natural', level:'B1', q:'In a conversation, “That makes sense” means:', opts:['Isso faz sentido.','Isso está caro.','Isso é obrigatório.','Isso está quebrado.'], ans:0, exp:'Chunk muito comum em filmes e conversas: That makes sense = faz sentido.'},
+    {area:'estrutura', level:'B1', q:'Choose the best way to give an opinion with reason.', opts:['I think English important because travel.','I think English is important because I want to travel.','In my think, English important for travel.','I am think English is important to travel.'], ans:1, exp:'Estrutura clara: I think + sentence + because + reason.'},
+    {area:'listening/filmes', level:'B1', q:'“I’m gonna leave” is the informal spoken form of:', opts:['I am going to leave.','I have gone to leave.','I am leaving yesterday.','I will left.'], ans:0, exp:'Gonna = going to na fala informal. Em escrita formal, prefira going to.'},
+    {area:'tempo verbal', level:'B1', q:'If it rains tomorrow, I ___ at home.', opts:['stay','stayed','will stay','was staying'], ans:2, exp:'First conditional: If + present simple, will + verb.'},
+    {area:'estrutura', level:'A2+', q:'Which sentence connects ideas best?', opts:['I was tired. I slept a lot.','I slept a lot because I was tired.','Because tired I slept much.','I slept because I tired.'], ans:1, exp:'Because conecta causa. Em inglês precisa de sujeito + verbo: because I was tired.'},
+    {area:'vocabulário natural', level:'B1', q:'What does “Could you repeat that?” mean?', opts:['Você pode repetir isso?','Você pode apagar isso?','Você pode comprar isso?','Você pode traduzir isso?'], ans:0, exp:'Frase essencial em viagem e conversação. Could you...? é educado.'},
+    {area:'tempo verbal', level:'B1', q:'I ___ never ___ to London.', opts:['have / been','has / gone','did / been','was / go'], ans:0, exp:'Present perfect para experiência: I have never been to London.'},
+    {area:'estrutura', level:'B1', q:'Which version is more natural?', opts:['Although I was tired, I kept studying.','Although I tired, I kept study.','Although I was tired, I keep studied.','Although tired was I, I studied kept.'], ans:0, exp:'Although = embora. Depois: sujeito + verbo. Kept + verbo com -ing: kept studying.'},
+    {area:'vocabulário natural', level:'A2+', q:'“I’m looking for the station” means:', opts:['Estou procurando a estação.','Estou olhando a estação.','Estou esperando a estação.','Estou saindo da estação.'], ans:0, exp:'Look for = procurar. Não traduza palavra por palavra: look ≠ sempre olhar.'},
+    {area:'tempo verbal', level:'A2+', q:'She usually ___ coffee, but yesterday she ___ tea.', opts:['drinks / drank','drink / drank','drank / drinks','drinks / drinked'], ans:0, exp:'Usually pede presente: she drinks. Yesterday pede passado irregular: drank.'},
+    {area:'estrutura', level:'B1+', q:'Choose the sentence with the best flow.', opts:['I want travel but I no speak English good.','I want to travel, but I don’t speak English very well yet.','I want traveling but I am not speak English good.','I want travel, however I don’t speaking good.'], ans:1, exp:'Want + to verb. Negative: don’t + base verb. Very well é mais natural que good para descrever speak.'},
+    {area:'listening/filmes', level:'B1+', q:'In movies, “Are you kidding me?” usually means:', opts:['Você está brincando comigo? / Sério isso?','Você está me ensinando?','Você está me procurando?','Você está atrasado?'], ans:0, exp:'Chunk comum para surpresa/irritação. Em filmes, o tom ajuda muito.'}
+  ],
+  listeningItems: [
+    {level:'A2', title:'Daily routine', text:'Every morning, I wake up at seven. I work in my field during the day, and after work I go to the gym. At night, I study English because I want to travel next year.', ask:'Why does she study English?', answer:'because she wants to travel'},
+    {level:'A2+', title:'Yesterday', text:'Yesterday was a busy day. I worked until six, went to the gym, and then watched a horror movie. I slept a lot because I was really tired.', ask:'Why did she sleep a lot?', answer:'because she was tired'},
+    {level:'B1', title:'Travel problem', text:'I arrived at the airport early, but my flight was delayed. I asked the woman at the desk for help, and she told me to check the screen every thirty minutes.', ask:'What was the problem?', answer:'the flight was delayed'},
+    {level:'B1+', title:'Movie dialogue style', text:'I know this sounds strange, but I have seen that man before. He was standing outside my house last night, and now he is here again.', ask:'Why is the speaker worried?', answer:'she has seen the man before'}
+  ],
+  speakingPrompts: [
+    {level:'A2', prompt:'Tell me about your routine. Use: I work, I go, I study.', target:['work','go','study'], grammar:'Use Simple Present for routine.'},
+    {level:'A2+', prompt:'Tell me what you did yesterday. Use at least two past verbs.', target:['yesterday','worked','went','slept','watched','studied'], grammar:'Use Simple Past: worked, went, slept, watched.'},
+    {level:'B1', prompt:'Explain why you want to learn English and give one example.', target:['because','travel','improve','speaking','listening'], grammar:'Use I want to... because...'},
+    {level:'B1+', prompt:'Describe a movie you like and explain why you recommend it.', target:['movie','because','story','characters','recommend'], grammar:'Give opinion + reason + example.'}
+  ]
+};
+
+function initState() {
+  const s = APP.state;
+  if (!s.started) {
+    APP.state = { started: new Date().toISOString(), xp: 0, streak: 1, quizDone: 0, listenDone: 0, speakDone: 0, reviews: [], weak: {}, name: 'Você', dayOffset: 0, voiceURI: '', rate: .9 };
+    save();
+  }
+}
+function save(){ localStorage.setItem('levelupState', JSON.stringify(APP.state)); }
+function getDay(){ const start = new Date(APP.state.started); const now = new Date(); return Math.max(1, Math.floor((now - start)/86400000)+1 + (APP.state.dayOffset||0)); }
+function getXP(){ return APP.state.xp || 0; }
+function currentLevel(){ let cur = APP.levels[0]; APP.levels.forEach(l => { if (getXP() >= l.min) cur = l; }); return cur; }
+function addXP(n, reason=''){ APP.state.xp = getXP() + n; save(); renderAll(); if(reason) toast(`+${n} XP — ${reason}`); }
+function toast(text){ const el=document.createElement('div'); el.textContent=text; el.style.cssText='position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#ffb84d;color:#111;padding:12px 16px;border-radius:999px;font-weight:900;box-shadow:0 15px 35px rgba(0,0,0,.35);z-index:99'; document.body.appendChild(el); setTimeout(()=>el.remove(),1800); }
+function esc(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+function setupNav(){
+  const nav = document.getElementById('nav');
+  nav.innerHTML = APP.tabs.map(([id,label]) => `<button data-tab="${id}" class="${id==='dashboard'?'active':''}">${label}</button>`).join('');
+  nav.addEventListener('click', e => {
+    const btn = e.target.closest('button[data-tab]'); if(!btn) return;
+    document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.getElementById(btn.dataset.tab).classList.add('active');
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+}
+
+function renderDashboard(){
+  const day = getDay(); const level = currentLevel(); const next = APP.levels.find(l=>l.min>getXP()) || APP.levels[APP.levels.length-1];
+  const pct = next.min === level.min ? 100 : Math.min(100, Math.round(((getXP()-level.min)/(next.min-level.min))*100));
+  const week = Math.min(12, Math.ceil(day/7)); const mod = APP.modules[week-1];
+  const nextReview = Math.ceil(day/14)*14; document.getElementById('todayPill').textContent = `Dia ${day} • ${level.id}`;
+  document.getElementById('dashboard').innerHTML = `
+    <div class="grid two">
+      <div class="card">
+        <span class="tag">nível atual</span><span class="tag">meta: filmes sem legenda PT</span>
+        <h2>Você está em <span style="color:var(--accent)">${level.id}</span> — ${level.title}</h2>
+        <p class="muted">Seu foco agora: sair do A2 com base firme e construir escuta real para B1/B2. O app dá XP por estudo, quiz, listening, speaking e revisão.</p>
+        <div class="big">${getXP()} XP</div>
+        <div class="progress"><div class="bar" style="width:${pct}%"></div></div>
+        <p class="small muted">Progresso até ${next.id}: ${pct}%</p>
+        <div class="row"><button class="btn" onclick="goTab('lessons')">Começar lição de hoje</button><button class="btn secondary" onclick="goTab('review')">Avaliação quinzenal</button></div>
+      </div>
+      <div class="card">
+        <h3>Plano de hoje — ${mod.theme}</h3>
+        <p><strong>Gramática:</strong> ${mod.grammar}</p>
+        <p><strong>Vocabulário natural:</strong></p>
+        ${mod.vocab.map(v=>`<span class="tag">${v}</span>`).join('')}
+        <p><strong>Estrutura:</strong> ${mod.structure}</p>
+        <div class="divider"></div>
+        <div class="grid three">
+          <div class="kpi"><strong>${APP.state.quizDone||0}</strong><span class="muted">quizzes</span></div>
+          <div class="kpi"><strong>${APP.state.listenDone||0}</strong><span class="muted">listenings</span></div>
+          <div class="kpi"><strong>${APP.state.speakDone||0}</strong><span class="muted">speaking</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <h3>Rotina de 1 hora por dia</h3>
+      <div class="checklist">
+        <label><input type="checkbox" onchange="markDaily(this,10)"> 10 min — revisão do que você errou</label>
+        <label><input type="checkbox" onchange="markDaily(this,15)"> 15 min — lição: tempo verbal + estrutura</label>
+        <label><input type="checkbox" onchange="markDaily(this,15)"> 15 min — listening com voz feminina</label>
+        <label><input type="checkbox" onchange="markDaily(this,10)"> 10 min — speaking gravando sua resposta</label>
+        <label><input type="checkbox" onchange="markDaily(this,10)"> 10 min — conversa com a Maya</label>
+      </div>
+      <p class="footer-note">Próxima avaliação quinzenal sugerida: dia ${nextReview}. Você também pode fazer manualmente quando quiser.</p>
+    </div>`;
+}
+function markDaily(box,xp){ if(box.checked){ addXP(xp,'rotina diária'); box.disabled=true; } }
+function goTab(id){ document.querySelector(`nav button[data-tab="${id}"]`).click(); }
+
+function renderLevels(){
+  const cur=currentLevel();
+  document.getElementById('levels').innerHTML = `<div class="card"><h2>Mapa de níveis</h2><p class="muted">Cada level combina gramática, vocabulário natural, estrutura de frase, listening, speaking e revisão.</p>${APP.levels.map(l=>`
+    <div class="level-row ${getXP()>=l.min?'unlocked':''} ${cur.id===l.id?'current':''}">
+      <div class="badge">${l.id}</div><div><strong>${l.title}</strong><br><span class="muted small">${l.desc}</span></div><div class="small muted">${l.min} XP</div>
+    </div>`).join('')}</div>`;
+}
+
+function renderLessons(){
+  const day=getDay(); const week=Math.min(12, Math.ceil(day/7));
+  document.getElementById('lessons').innerHTML = `<div class="card"><h2>Lições — trilha de 12 semanas</h2><p class="muted">A proposta é repetir muito, mas subindo a complexidade. Clique em uma lição, leia em voz alta e ganhe XP.</p>${APP.modules.map((m,i)=>`
+    <div class="lesson-item">
+      <div class="row"><span class="tag">Semana ${m.week}</span><span class="tag">${m.level}</span>${i+1===week?'<span class="tag">hoje</span>':''}</div>
+      <h3>${m.theme}</h3>
+      <p><strong>Tempo verbal/gramática:</strong> ${m.grammar}</p>
+      <p><strong>Vocabulário natural:</strong> ${m.vocab.map(v=>`<code>${v}</code>`).join(' ')}</p>
+      <p><strong>Estrutura da frase:</strong> ${m.structure}</p>
+      <details><summary>Mini treino</summary>
+        <p>1) Escreva uma frase sobre sua vida usando a estrutura.</p>
+        <p>2) Leia a frase em voz alta 3 vezes.</p>
+        <p>3) Transforme em pergunta.</p>
+      </details>
+      <button class="btn secondary" onclick="addXP(20,'lição concluída')">Marcar como concluída</button>
+    </div>`).join('')}</div>`;
+}
+
+function renderQuiz(){
+  const pool = APP.questions;
+  const ids = [...Array(pool.length).keys()].sort(()=>Math.random()-0.5).slice(0,8);
+  window.currentQuizIds = ids;
+  document.getElementById('quiz').innerHTML = `<div class="card"><h2>Quiz adaptativo</h2><p class="muted">8 perguntas. Depois de responder, o app explica o tempo verbal, vocabulário natural e estrutura da frase.</p><div id="quizBox">${ids.map((idx,n)=>questionHTML(pool[idx],n)).join('')}</div><button class="btn" onclick="gradeQuiz()">Corrigir quiz</button><div id="quizResult"></div></div>`;
+}
+function questionHTML(q,n){ return `<div class="question" data-q="${n}"><div class="row"><span class="tag">${q.level}</span><span class="tag">${q.area}</span></div><p><strong>${n+1}. ${q.q}</strong></p>${q.opts.map((o,i)=>`<label class="option"><input type="radio" name="q${n}" value="${i}"> ${esc(o)}</label>`).join('')}<div class="feedback" id="fb${n}" style="display:none"></div></div>`; }
+function gradeQuiz(){
+  let score=0, detail='';
+  window.currentQuizIds.forEach((idx,n)=>{
+    const q=APP.questions[idx]; const chosen=document.querySelector(`input[name="q${n}"]:checked`); const fb=document.getElementById('fb'+n);
+    const ok=chosen && Number(chosen.value)===q.ans; if(ok) score++;
+    fb.style.display='block'; fb.innerHTML = `<div class="${ok?'correct':'wrong'}">${ok?'Correto':'Ajuste necessário'}</div><p><strong>Resposta:</strong> ${esc(q.opts[q.ans])}</p><p>${q.exp}</p>`;
+    if(!ok){ APP.state.weak[q.area]=(APP.state.weak[q.area]||0)+1; }
+  });
+  APP.state.quizDone=(APP.state.quizDone||0)+1; save();
+  const xp = score*12 + (score===8?20:0); addXP(xp,'quiz');
+  document.getElementById('quizResult').innerHTML = `<div class="feedback"><h3>Resultado: ${score}/8</h3><p>${score>=6?'Muito bom. Continue subindo a dificuldade.':'Revise as explicações dos erros antes de tentar outro quiz.'}</p></div>`;
+}
+
+function getVoices(){ return speechSynthesis.getVoices ? speechSynthesis.getVoices() : []; }
+function preferredVoice(){
+  const voices = getVoices();
+  if(APP.state.voiceURI){ const v=voices.find(v=>v.voiceURI===APP.state.voiceURI); if(v) return v; }
+  return voices.find(v => /female|woman|samantha|victoria|zira|google uk english female|maria|joana/i.test(v.name)) || voices.find(v=>/en/i.test(v.lang)) || voices[0];
+}
+function speakText(text, lang='en-US'){
+  if(!('speechSynthesis' in window)){ alert('Seu navegador não suporta voz. Tente Chrome ou Edge.'); return; }
+  speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(text); const v=preferredVoice(); if(v) u.voice=v; u.lang = v?.lang || lang; u.rate = APP.state.rate || .9; speechSynthesis.speak(u);
+}
+function renderListening(){
+  document.getElementById('listening').innerHTML = `<div class="card"><h2>Ouvir — modo filmes</h2><p class="muted">Escute sem ler primeiro. Depois responda. Use velocidade mais lenta no começo e suba aos poucos.</p>${APP.listeningItems.map((it,i)=>`
+    <div class="lesson-item">
+      <div class="row"><span class="tag">${it.level}</span><span class="tag">${it.title}</span></div>
+      <h3>${it.title}</h3>
+      <button class="btn" onclick="speakText('${it.text.replace(/'/g,"\\'")}')">▶ Ouvir com voz feminina</button>
+      <button class="btn secondary" onclick="document.getElementById('ltxt${i}').style.display='block'">Mostrar texto</button>
+      <p id="ltxt${i}" style="display:none">${it.text}</p>
+      <p><strong>Pergunta:</strong> ${it.ask}</p>
+      <input class="input" id="lans${i}" placeholder="Responda em inglês...">
+      <button class="btn secondary" onclick="checkListening(${i})">Avaliar resposta</button>
+      <div id="lfb${i}"></div>
+    </div>`).join('')}</div>`;
+}
+function checkListening(i){
+  const it=APP.listeningItems[i]; const ans=document.getElementById('lans'+i).value.toLowerCase();
+  const keys=it.answer.split(' ').filter(w=>w.length>3); const hits=keys.filter(k=>ans.includes(k)).length;
+  const ok = hits>=Math.min(2, keys.length);
+  document.getElementById('lfb'+i).innerHTML = `<div class="feedback"><div class="${ok?'correct':'wrong'}">${ok?'Boa compreensão':'Você pegou parte, revise o áudio'}</div><p>Resposta esperada: <strong>${it.answer}</strong></p><p>Dica: ouça de novo e tente capturar palavras-chave, não palavra por palavra.</p></div>`;
+  APP.state.listenDone=(APP.state.listenDone||0)+1; save(); addXP(ok?25:12,'listening');
+}
+
+let recognition;
+function startRecognition(targetId){
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if(!SR){ alert('Seu navegador não suporta reconhecimento de fala. No celular, tente Chrome/Android.'); return; }
+  recognition = new SR(); recognition.lang='en-US'; recognition.interimResults=false; recognition.maxAlternatives=1;
+  recognition.onresult = e => { document.getElementById(targetId).value = e.results[0][0].transcript; };
+  recognition.onerror = e => alert('Erro no reconhecimento de fala: '+e.error);
+  recognition.start();
+}
+function renderSpeaking(){
+  document.getElementById('speaking').innerHTML = `<div class="card"><h2>Falar — avaliação automática</h2><p class="muted">A avaliação olha clareza da resposta, palavras-alvo e estruturas. Pronúncia real é aproximada, pois o navegador só devolve a transcrição.</p>${APP.speakingPrompts.map((p,i)=>`
+    <div class="lesson-item">
+      <div class="row"><span class="tag">${p.level}</span><span class="tag">speaking</span></div>
+      <h3>${p.prompt}</h3>
+      <p><strong>Foco:</strong> ${p.grammar}</p>
+      <button class="btn" onclick="speakText('${p.prompt.replace(/'/g,"\\'")}')">▶ Ouvir pergunta</button>
+      <button class="btn secondary" onclick="startRecognition('sp${i}')">🎙️ Responder falando</button>
+      <textarea id="sp${i}" placeholder="Sua fala aparecerá aqui. Você também pode digitar."></textarea>
+      <button class="btn good" onclick="gradeSpeaking(${i})">Avaliar minha fala</button>
+      <div id="sfb${i}"></div>
+    </div>`).join('')}</div>`;
+}
+function gradeSpeaking(i){
+  const p=APP.speakingPrompts[i]; const text=document.getElementById('sp'+i).value.trim(); const lower=text.toLowerCase(); const words=lower.split(/\s+/).filter(Boolean);
+  const hit=p.target.filter(k=>lower.includes(k)).length; let score=0; score += Math.min(40, words.length*2); score += hit*12;
+  if(/\bbecause\b/.test(lower)) score+=10; if(/\b(yesterday|worked|went|slept|watched|studied)\b/.test(lower)) score+=8; if(/\b(i|my|me)\b/.test(lower)) score+=5;
+  score=Math.min(100,score);
+  const suggestions=[];
+  if(words.length<12) suggestions.push('Fale pelo menos 12–20 palavras para treinar fluência.');
+  if(!/\bbecause\b/.test(lower) && i>=2) suggestions.push('Use “because” para explicar o motivo.');
+  if(i===1 && !/\b(yesterday|worked|went|slept|watched|studied)\b/.test(lower)) suggestions.push('Use passado: worked, went, slept, watched, studied.');
+  if(!text) suggestions.push('Grave ou digite sua resposta antes de avaliar.');
+  document.getElementById('sfb'+i).innerHTML = `<div class="feedback"><h3>Nota: ${score}/100</h3><p><strong>Pontos fortes:</strong> ${hit} palavra(s)-alvo usadas: ${p.target.filter(k=>lower.includes(k)).join(', ') || 'nenhuma ainda'}.</p><p><strong>Melhore:</strong> ${suggestions.join(' ') || 'Boa resposta. Agora tente falar mais rápido e com uma frase extra.'}</p><p><strong>Modelo natural:</strong> ${modelAnswer(i)}</p></div>`;
+  APP.state.speakDone=(APP.state.speakDone||0)+1; save(); addXP(Math.round(score/4),'speaking');
+}
+function modelAnswer(i){
+  return [
+    'I work in my field, I go to the gym, and I study English because I want to travel.',
+    'Yesterday, I worked, went to the gym, and slept a lot because I was really tired.',
+    'I want to learn English because I want to travel and understand movies without Portuguese subtitles.',
+    'I recommend this movie because the story is interesting, the characters are strong, and the ending is surprising.'
+  ][i];
+}
+
+function renderConversation(){
+  document.getElementById('conversation').innerHTML = `<div class="card"><h2>Conversar com a Maya</h2><p class="muted">Maya é sua treinadora. Ela responde em inglês simples, corrige uma coisa por vez e fala com voz feminina.</p><div class="chat" id="chat"><div class="msg bot"><strong>Maya:</strong> Hi! Tell me about your day. Use English, even with mistakes. 🙂</div></div><div class="row" style="margin-top:12px"><input class="input" id="chatInput" style="flex:1;min-width:220px" placeholder="Type in English..."><button class="btn secondary" onclick="startRecognition('chatInput')">🎙️</button><button class="btn" onclick="sendChat()">Enviar</button></div></div>`;
+}
+function sendChat(){
+  const input=document.getElementById('chatInput'); const text=input.value.trim(); if(!text) return; addMsg(text,'user'); input.value='';
+  const reply = mayaReply(text); setTimeout(()=>{ addMsg('<strong>Maya:</strong> '+reply,'bot'); speakText(reply.replace(/<[^>]+>/g,'')); addXP(8,'conversa'); },300);
+}
+function addMsg(html, cls){ const chat=document.getElementById('chat'); const d=document.createElement('div'); d.className='msg '+cls; d.innerHTML=html; chat.appendChild(d); chat.scrollTop=chat.scrollHeight; }
+function mayaReply(text){
+  const l=text.toLowerCase(); let correction='';
+  if(/i'm sleeping|i am sleeping/.test(l) && /yesterday/.test(l)) correction='Small correction: say <strong>Yesterday, I slept</strong>, not “I am sleeping”.';
+  else if(/grow my speak/.test(l)) correction='Small correction: say <strong>improve my speaking</strong>, not “grow my speak”.';
+  else if(/i going/.test(l)) correction='Small correction: say <strong>I am going to...</strong>.';
+  else correction='Nice! One natural phrase: <strong>That makes sense.</strong> It means “faz sentido”.';
+  const prompts=['What did you do yesterday?','What are you going to do tomorrow?','What kind of movies do you like?','Why do you want to improve your listening?'];
+  return `${correction}<br>Now answer: ${prompts[Math.floor(Math.random()*prompts.length)]}`;
+}
+
+function renderReview(){
+  const day=getDay(); const weak=Object.entries(APP.state.weak||{}).sort((a,b)=>b[1]-a[1]);
+  document.getElementById('review').innerHTML = `<div class="card"><h2>Avaliação quinzenal</h2><p class="muted">A cada 14 dias, faça uma prova mista: revisão dos erros, quiz, listening e speaking. O objetivo é relembrar tudo o que passou.</p><div class="grid three"><div class="kpi"><strong>Dia ${day}</strong><span class="muted">da trilha</span></div><div class="kpi"><strong>${day%14===0?'Hoje':'Dia '+Math.ceil(day/14)*14}</strong><span class="muted">próxima revisão</span></div><div class="kpi"><strong>${weak[0]?.[0] || '—'}</strong><span class="muted">maior ponto de atenção</span></div></div><div class="divider"></div><h3>Checklist quinzenal</h3><div class="checklist"><label><input type="checkbox"> Refazer 10 perguntas erradas</label><label><input type="checkbox"> Ouvir 4 áudios sem texto</label><label><input type="checkbox"> Gravar 4 respostas de speaking</label><label><input type="checkbox"> Escrever um mini texto: rotina, ontem, amanhã e objetivo</label></div><button class="btn" onclick="startBiweeklyReview()">Iniciar avaliação agora</button><div id="reviewBox"></div></div>`;
+}
+function startBiweeklyReview(){
+  const qs=[...APP.questions].sort(()=>Math.random()-0.5).slice(0,10);
+  window.reviewIds=qs.map(q=>APP.questions.indexOf(q));
+  document.getElementById('reviewBox').innerHTML = `<div class="divider"></div><h3>Parte 1 — Quiz</h3>${window.reviewIds.map((idx,n)=>questionHTML(APP.questions[idx],n)).join('')}<h3>Parte 2 — Speaking</h3><p>Grave uma resposta: “What did you learn in the last two weeks, and what do you still need to improve?”</p><textarea id="reviewSpeak"></textarea><button class="btn secondary" onclick="startRecognition('reviewSpeak')">🎙️ Responder falando</button><br><br><button class="btn good" onclick="gradeReview()">Finalizar avaliação</button><div id="reviewResult"></div>`;
+}
+function gradeReview(){
+  let score=0;
+  window.reviewIds.forEach((idx,n)=>{ const q=APP.questions[idx]; const chosen=document.querySelector(`input[name="q${n}"]:checked`); const ok=chosen && Number(chosen.value)===q.ans; if(ok) score++; const fb=document.getElementById('fb'+n); fb.style.display='block'; fb.innerHTML=`<div class="${ok?'correct':'wrong'}">${ok?'Correto':'Revisar'}</div><p>${q.exp}</p>`; if(!ok) APP.state.weak[q.area]=(APP.state.weak[q.area]||0)+1; });
+  const sp=(document.getElementById('reviewSpeak').value||'').trim().split(/\s+/).filter(Boolean).length; const total = Math.round((score/10)*70 + Math.min(30, sp));
+  APP.state.reviews.push({date:new Date().toISOString(), total, score}); save(); addXP(total,'avaliação quinzenal');
+  document.getElementById('reviewResult').innerHTML=`<div class="feedback"><h3>Nota quinzenal: ${total}/100</h3><p>Quiz: ${score}/10. Speaking: ${Math.min(30,sp)}/30.</p><p><strong>Próximo foco:</strong> ${Object.entries(APP.state.weak||{}).sort((a,b)=>b[1]-a[1])[0]?.[0] || 'continuar listening e speaking'}.</p></div>`;
+}
+
+function renderSettings(){
+  const voices=getVoices();
+  document.getElementById('settings').innerHTML = `<div class="card"><h2>Ajustes</h2><p class="muted">Escolha a voz feminina disponível no seu navegador. Em alguns celulares, a lista muda conforme as vozes instaladas.</p><label>Voz</label><select id="voiceSelect">${voices.map(v=>`<option value="${v.voiceURI}" ${APP.state.voiceURI===v.voiceURI?'selected':''}>${v.name} — ${v.lang}</option>`).join('')}</select><br><br><label>Velocidade da voz: <span id="rateVal">${APP.state.rate || .9}</span></label><input type="range" min="0.6" max="1.2" step="0.05" value="${APP.state.rate || .9}" oninput="APP.state.rate=Number(this.value);document.getElementById('rateVal').textContent=this.value;save()"><br><br><button class="btn" onclick="APP.state.voiceURI=document.getElementById('voiceSelect').value; save(); speakText('Hi, I am your English coach. Let us practice together.')">Testar voz</button><div class="divider"></div><h3>Dados</h3><p class="muted">Tudo fica salvo no seu navegador por localStorage. Não há login.</p><div class="row"><button class="btn secondary" onclick="APP.state.dayOffset=(APP.state.dayOffset||0)+1;save();renderAll()">Simular próximo dia</button><button class="btn danger" onclick="if(confirm('Zerar progresso?')){localStorage.removeItem('levelupState');location.reload()}" >Zerar progresso</button></div></div>`;
+}
+
+function renderAll(){ renderDashboard(); renderLevels(); renderLessons(); renderQuiz(); renderListening(); renderSpeaking(); renderConversation(); renderReview(); renderSettings(); }
+window.speechSynthesis && speechSynthesis.addEventListener('voiceschanged', renderSettings);
+initState(); setupNav(); renderAll();
+</script>
+</body>
+</html>
+
+LevelUp English — protótipo de app A2→B1/B2
+
+Como usar:
+1. Abra o arquivo index.html no Chrome, Edge ou Safari.
+2. No celular, envie a pasta/ZIP para o aparelho e abra o index.html pelo navegador.
+3. Para fala por microfone, Chrome no Android costuma funcionar melhor.
+4. A voz feminina depende das vozes instaladas no seu celular/navegador.
+5. O progresso fica salvo apenas no navegador via localStorage.
+
+Limites do protótipo:
+- Não usa servidor, login nem API paga.
+- A avaliação de pronúncia é aproximada: o navegador transcreve sua fala, e o app avalia a transcrição.
+- Para avaliação fonética profissional, seria necessário integrar uma API de speech assessment.
