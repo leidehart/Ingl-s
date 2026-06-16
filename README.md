@@ -1,42 +1,27 @@
-# LevelUp English
+# LevelUp English — A1 a C1
 
-App web gratuito para estudar inglês no celular, criado para uma estudante em nível A2 evoluir para A2+, B1 e B1+ com treinos clicáveis em formato de prova.
+App estático em HTML/CSS/JS para estudo diário de inglês com visual gamificado, voz feminina, conversação, escrita, fala, audição, testes rápidos, avaliações quinzenais e simulado mensal inspirado nos formatos IELTS/TOEFL.
 
-## O que tem nesta versão
+## O que foi incluído
 
-- Dashboard com XP, level atual e progresso.
-- Levels destacados: A2.0, A2.1, A2.2, A2+, B1.1, B1.2, B1+ e B2.0.
-- Treinos clicáveis em modo prova.
-- Prova só de verbos.
-- Prova de tempos verbais.
-- Prova de estrutura da frase.
-- Prova de vocabulário natural.
-- Prova de inglês de filmes.
-- Prova complexa geral.
-- Avaliação quinzenal.
-- Explicações por questão: gramática, tempo verbal, estrutura e vocabulário natural.
-- Listening com voz em inglês usando SpeechSynthesis do navegador.
-- Speaking com microfone usando SpeechRecognition quando disponível.
-- Conversa simples com a treinadora Maya.
-- Histórico de provas e pontos fracos.
-- Progresso salvo no navegador via localStorage.
+- Rota CEFR de A1 até C1.
+- Plano de 40 minutos por dia: teste rápido, listening, speaking, writing e conversation.
+- Parceira de conversação "Maya" com voz feminina, começando em uma cafeteria.
+- Correções simples de gramática/vocabulário com incentivo.
+- Situações: cafeteria, comida, compras, trabalho, relacionamento, rotina e viagem.
+- Treinos e provas clicáveis com explicação por resposta.
+- Avaliação quinzenal cumulativa.
+- Simulado mensal IELTS/TOEFL oficial-like para acompanhar evolução.
+- Escrita com feedback automático básico.
+- Speaking com reconhecimento de fala quando o navegador oferece suporte.
+- Evolução por habilidade: gramática, vocabulário, listening, speaking, writing, conversation e provas.
 
-## Como usar localmente
+## Como usar
 
-Baixe o projeto e abra o arquivo `index.html` no navegador.
+Abra `index.html` no navegador. O progresso fica salvo no `localStorage` do navegador.
 
-Para melhor funcionamento de voz e microfone, use Chrome no Android ou um navegador moderno atualizado.
+Para publicar no GitHub Pages, envie todos os arquivos para o repositório e ative Pages na branch principal.
 
-## Como publicar no GitHub Pages
+## Observação importante
 
-1. Crie um repositório no GitHub.
-2. Envie todos os arquivos deste projeto.
-3. Vá em `Settings` → `Pages`.
-4. Em `Build and deployment`, escolha `Deploy from a branch`.
-5. Escolha a branch `main` e a pasta `/root`.
-6. Salve e aguarde o GitHub gerar o link público.
-
-## Observações
-
-A avaliação de fala é aproximada. O navegador converte voz em texto e o app verifica palavras-chave e estrutura básica. Para avaliação profissional de pronúncia, seria necessário usar uma API especializada ou um professor humano.
-
+O simulado mensal prepara e acompanha a evolução, mas não emite certificação oficial. IELTS e TOEFL oficiais exigem inscrição e realização nos canais oficiais dos exames.
