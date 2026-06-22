@@ -1,0 +1,10 @@
+# Opção para aplicar pelo terminal
+
+git clone https://github.com/leidehart/ENaPP.git
+cd ENaPP
+
+# copie o index.html deste pacote para dentro da pasta ENaPP, substituindo o antigo
+
+git add index.html
+git commit -m "Adiciona perguntas variadas e privacidade por usuario"
+git push origin main

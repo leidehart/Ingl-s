@@ -1,0 +1,12 @@
+ENaPP — melhorias aplicadas
+
+1. Perguntas variadas a cada acesso.
+2. Alternativas embaralhadas.
+3. Resposta correta em posição variável.
+4. Perfil individual por navegador ou por link ?tester=.
+5. Botão Novo testador zerado.
+6. Botão Apagar só meus dados.
+7. Histórico sem respostas detalhadas.
+8. Evolução individual com dias ativos, sequência, XP e média.
+9. Escrita com opção de não salvar o texto completo.
+10. Resumo copiável sem expor respostas.
